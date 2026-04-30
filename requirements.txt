@@ -1,0 +1,3 @@
+langgraph
+langchain-huggingface
+python-dotenv

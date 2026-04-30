@@ -1,0 +1,28 @@
+# Environment and secrets
+.env
+.env.*
+
+# Python virtual environments
+.venv/
+.venv*/
+venv/
+.python-version
+
+# Python cache/bytecode
+__pycache__/
+*.py[cod]
+*.pyo
+
+# Tool caches and test artifacts
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+.coverage
+htmlcov/
+
+# IDE/editor
+.vscode/
+.idea/
+
+# OS files
+.DS_Store
