@@ -1,5 +1,5 @@
-from state import EmailState
 from constants import NodeName
+from email_processing_state import EmailState
 
 
 def route_email(state: EmailState) -> NodeName:

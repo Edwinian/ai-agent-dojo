@@ -1,11 +1,4 @@
-from llm_service import LLMService
-from state import EmailState
-
-_llm_service_holder = {"service": LLMService()}
-
-
-def set_llm_service(service: LLMService) -> None:
-    _llm_service_holder["service"] = service
+from email_processing_state import EmailState
 
 
 def read_email(state: EmailState):
@@ -17,7 +10,7 @@ def read_email(state: EmailState):
     return {}
 
 
-def classify_email(state: EmailState):
+def classify_email(state: EmailState, llm_service):
     """Alfred uses an LLM to determine if the email is spam or legitimate"""
     email = state["email"]
 
@@ -33,7 +26,7 @@ def classify_email(state: EmailState):
     If it is legitimate, categorize it (inquiry, complaint, thank you, etc.).
     """
 
-    response_content = _llm_service_holder["service"].invoke(prompt)
+    response_content = llm_service.invoke(prompt)
 
     response_text = response_content.lower()
     is_spam = "spam" in response_text and "not spam" not in response_text
@@ -70,7 +63,7 @@ def handle_spam(state: EmailState):
     return {}
 
 
-def draft_response(state: EmailState):
+def draft_response(state: EmailState, llm_service):
     """Alfred drafts a preliminary response for legitimate emails"""
     email = state["email"]
     category = state["email_category"] or "general"
@@ -88,7 +81,7 @@ def draft_response(state: EmailState):
     Draft a brief, professional response that Mr. Hugg can review and personalize before sending.
     """
 
-    response_content = _llm_service_holder["service"].invoke(prompt)
+    response_content = llm_service.invoke(prompt)
 
     new_messages = state.get("messages", []) + [
         {"role": "user", "content": prompt},
