@@ -1,5 +1,7 @@
 from compile_graph import compiled_graph
+from langfuse.langchain import CallbackHandler
 
+langfuse_handler = CallbackHandler()
 
 # Example legitimate email
 legitimate_email = {
@@ -18,25 +20,33 @@ spam_email = {
 # Process the legitimate email
 print("\nProcessing legitimate email...")
 legitimate_result = compiled_graph.invoke(
-    {
+    input={
         "email": legitimate_email,
         "is_spam": None,
         "spam_reason": None,
         "email_category": None,
         "email_draft": None,
         "messages": [],
-    }
+    },
+    config={
+        "callbacks": [langfuse_handler],
+        "metadata": {"ls_model_name": "deepseek-ai/DeepSeek-V4-Pro"},
+    },
 )
 
 # Process the spam email
 print("\nProcessing spam email...")
 spam_result = compiled_graph.invoke(
-    {
+    input={
         "email": spam_email,
         "is_spam": None,
         "spam_reason": None,
         "email_category": None,
         "email_draft": None,
         "messages": [],
-    }
+    },
+    config={
+        "callbacks": [langfuse_handler],
+        "metadata": {"ls_model_name": "deepseek-ai/DeepSeek-V4-Pro"},
+    },
 )
