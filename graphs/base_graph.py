@@ -36,9 +36,7 @@ class BaseGraph(ABC, Generic[NODE_NAME, GRAPH_STATE]):
 
         for edge in self.edges:
             has_direct_edge = edge.target_node is not None
-            has_conditional_edge = (
-                edge.route_function is not None and edge.route_map is not None
-            )
+            has_conditional_edge = edge.route_function is not None
 
             if has_direct_edge:
                 graph.add_edge(edge.source_node, edge.target_node)
@@ -72,5 +70,5 @@ class BaseGraph(ABC, Generic[NODE_NAME, GRAPH_STATE]):
             },
         )
     
-    def visualize(self):
-        return self.compiled_graph.get_graph().draw_mermaid_png()
+    def visualize(self, xray=False):
+        return self.compiled_graph.get_graph(xray=xray).draw_mermaid_png()
