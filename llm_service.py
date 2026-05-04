@@ -25,12 +25,13 @@ class LLMService(Generic[GRAPH_STATE]):
     def __init__(
         self,
         model_name: ModelName = ModelName.DEEPSEEK_V4_PRO,
-        vision_model_name: str | None = ModelName.QWEN_3_6_27B.value,
+        vision_model_name: str | None = ModelName.GROK_4_FAST_NON_REASONING.value,
         tools: list[Callable[..., Any]] | None = None,
     ) -> None:
         self.model_name = model_name
         self.vision_model_name = vision_model_name
         self.max_output_length = 512
+        self.request_timeout_seconds = int(os.getenv("HF_REQUEST_TIMEOUT_SECONDS", "240"))
         self.chat_llm = self.init_model()
 
         if tools is not None:
@@ -51,6 +52,7 @@ class LLMService(Generic[GRAPH_STATE]):
                 temperature=0.6,
                 top_p=0.95,
                 return_full_text=False,
+                timeout=self.request_timeout_seconds,
             )
         return ChatHuggingFace(llm=endpoint)
 
@@ -63,6 +65,7 @@ class LLMService(Generic[GRAPH_STATE]):
             temperature=0.6,
             top_p=0.95,
             return_full_text=False,
+            timeout=self.request_timeout_seconds,
         )
         return ChatHuggingFace(llm=endpoint)
 
@@ -71,7 +74,7 @@ class LLMService(Generic[GRAPH_STATE]):
         Extract text from an image file using a multimodal model.
         """
         all_text = ""
-        
+
         try:
             with open(img_path, "rb") as image_file:
                 image_bytes = image_file.read()

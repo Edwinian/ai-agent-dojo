@@ -37,6 +37,10 @@ class DocumentAnalysisGraph(BaseGraph[DocumentAnalysisNode, DocumentState]):
                 # If the latest message requires a tool, route to tools
                 # Otherwise, provide a direct response
                 route_function=tools_condition,
+                route_map={
+                    "tools": DocumentAnalysisNode.TOOLS,
+                    "__end__": END,
+                },
             ),
             GraphEdge[DocumentAnalysisNode, DocumentState](
                 source_node=DocumentAnalysisNode.TOOLS,
