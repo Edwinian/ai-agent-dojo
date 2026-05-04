@@ -1,11 +1,15 @@
 from abc import ABC
+from pathlib import Path
 from typing import Generic, TypeVar
 
+from dotenv import load_dotenv
 from langfuse.langchain import CallbackHandler
 from langgraph.graph import StateGraph
 
 from type import GraphEdge, GraphNode
 from constants import ModelName
+
+load_dotenv(Path(__file__).resolve().parents[1] / ".env")
 
 NODE_NAME = TypeVar("NODE_NAME")
 GRAPH_STATE = TypeVar("GRAPH_STATE")
@@ -63,7 +67,7 @@ class BaseGraph(ABC, Generic[NODE_NAME, GRAPH_STATE]):
             config={
                 "callbacks": [langfuse_handler],
                 "metadata": {
-                    "ls_model_name":  self.model_name ,
+                    "ls_model_name": self.model_name,
                 },
             },
         )
