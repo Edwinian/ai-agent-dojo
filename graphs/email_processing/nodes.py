@@ -1,7 +1,17 @@
+from enum import Enum
+
 from constants import ModelName
 from llm_service import LLMService
 
 from .state import EmailState
+
+
+class EmailNode(str, Enum):
+    READ_EMAIL = "read_email"
+    CLASSIFY_EMAIL = "classify_email"
+    HANDLE_SPAM = "handle_spam"
+    DRAFT_RESPONSE = "draft_response"
+    NOTIFY_MR_HUGG = "notify_mr_hugg"
 
 
 def read_email(state: EmailState):
