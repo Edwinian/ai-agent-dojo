@@ -1,6 +1,6 @@
 from abc import ABC
 from pathlib import Path
-from typing import Generic, TypeVar
+from typing import Any, Generic, TypeVar
 
 from dotenv import load_dotenv
 from langfuse.langchain import CallbackHandler
@@ -27,9 +27,10 @@ class BaseGraph(ABC, Generic[NODE_NAME, GRAPH_STATE]):
         self.state = state
         self.nodes = nodes or []
         self.edges = edges or []
+        self.compiled_graph = self.compile()
 
     def compile(self):
-        graph = StateGraph(self.state)
+        graph = StateGraph[GRAPH_STATE](self.state)
         for node in self.nodes:
             graph.add_node(node.name, node.function)
 
@@ -60,9 +61,8 @@ class BaseGraph(ABC, Generic[NODE_NAME, GRAPH_STATE]):
         return graph.compile()
 
     def invoke(self, input: GRAPH_STATE):  # pylint: disable=redefined-builtin
-        compiled_graph = self.compile()
         langfuse_handler = CallbackHandler()
-        return compiled_graph.invoke(
+        return self.compiled_graph.invoke(
             input=input,
             config={
                 "callbacks": [langfuse_handler],
@@ -71,3 +71,6 @@ class BaseGraph(ABC, Generic[NODE_NAME, GRAPH_STATE]):
                 },
             },
         )
+    
+    def visualize(self):
+        return self.compiled_graph.get_graph().draw_mermaid_png()
