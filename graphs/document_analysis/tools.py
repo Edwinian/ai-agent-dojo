@@ -1,5 +1,5 @@
-from ..tools import divide, extract_text
+from tools.guest_info import guest_info_tool
 
-tools = [extract_text, divide]
+tools = [guest_info_tool]
 
 __all__ = ["tools"]

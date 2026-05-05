@@ -13,7 +13,7 @@ from type import GRAPH_STATE
 load_dotenv()
 
 
-class LLMService(Generic[GRAPH_STATE]):
+class HuggingFaceService(Generic[GRAPH_STATE]):
     def __init__(
         self,
         model_name: ModelName = ModelName.DEEPSEEK_V4_PRO,

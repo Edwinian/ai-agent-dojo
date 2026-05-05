@@ -35,7 +35,7 @@ class XaiService:
             print(f"XaiService LLM API error: {e!s}")
             return ""
 
-    def extract_texts(self, image_url: str) -> str:
+    def extract_text_from_image(self, image_url: str) -> str:
         try:
             if not self.x_client:
                 return "[extract_text failed] XAI_API_KEY is not set."

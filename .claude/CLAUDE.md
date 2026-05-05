@@ -73,6 +73,6 @@ No Laziness: Find root causes. No temporary fixes. Senior developer standards.
 
 Minimal Impact: Changes should only touch what's necessary. Avoid introducing bugs.
 
-Ensure requirements.txt file includes all dependencies imported by each file, add any missing ones to requirements.txt
+Before concluding, ensure requirements.txt file includes all dependencies imported by each file, add any missing ones to requirements.txt
 
 Use Enums instead of repeating hard-coded values

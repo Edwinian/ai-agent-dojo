@@ -1,7 +1,7 @@
 from enum import Enum
 
 from constants import ModelName
-from llm_service import LLMService
+from huggingface_service import HuggingFaceService
 
 from .state import EmailState
 
@@ -25,7 +25,7 @@ def read_email(state: EmailState):
 
 def classify_email(state: EmailState):
     """Alfred uses an LLM to determine if the email is spam or legitimate"""
-    llm_service = LLMService[EmailState](model_name=ModelName.DEEPSEEK_V4_PRO)
+    llm_service = HuggingFaceService[EmailState](model_name=ModelName.DEEPSEEK_V4_PRO)
     email = state["email"]
 
     prompt = f"""
@@ -79,7 +79,7 @@ def handle_spam(state: EmailState):
 
 def draft_response(state: EmailState):
     """Alfred drafts a preliminary response for legitimate emails"""
-    llm_service = LLMService[EmailState](model_name=ModelName.DEEPSEEK_V4_PRO)
+    llm_service = HuggingFaceService[EmailState](model_name=ModelName.DEEPSEEK_V4_PRO)
     email = state["email"]
     category = state["email_category"] or "general"
 

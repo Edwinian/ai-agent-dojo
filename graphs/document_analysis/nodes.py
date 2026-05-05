@@ -4,12 +4,11 @@ import requests
 from langchain_core.messages import AnyMessage
 from langchain_core.messages import SystemMessage
 
-from llm_service import LLMService
+from huggingface_service import HuggingFaceService
 
 from .state import DocumentState as AgentState
 from .tools import tools
-
-llm_with_tools = LLMService[AgentState](tools=tools).chat_llm
+llm_with_tools = HuggingFaceService[AgentState](tools=tools).chat_llm
 MAX_LLM_RETRIES = 3
 RETRY_BASE_DELAY_SECONDS = 2
 
@@ -28,33 +27,38 @@ def invoke_with_retry(messages: list[AnyMessage]) -> object:
             # Basic exponential backoff for transient Hugging Face router latency.
             time.sleep(RETRY_BASE_DELAY_SECONDS * (2 ** (attempt - 1)))
 
-
 def assistant(state: AgentState):
-    # System message
-    textual_description_of_tool = """
-extract_text(img_path: str) -> str:
-    Extract text from a local image via xAI (XaiService.extract_texts).
-
-    Args:
-        img_path: A local path to an image (e.g. PNG, JPEG).
-
-    Returns:
-        Extracted text string.
-divide(a: int, b: int) -> float:
-    Divide a and b
-"""
-    image = state["input_file"]
-    sys_msg = SystemMessage(
-        content=(
-            "You are a helpful butler named Alfred that serves Edwin. "
-            "You can analyse documents and run computations with provided tools:\n"
-            f"{textual_description_of_tool} \n "
-            "You have access to some optional images. "
-            f"Currently the loaded image is: {image}"
-        )
-    )
-
     return {
-        "messages": [invoke_with_retry([sys_msg] + state["messages"])],
-        "input_file": state["input_file"],
+        "messages": [llm_with_tools.invoke(state["messages"])],
     }
+
+
+# def assistant(state: AgentState):
+#     # System message
+#     textual_description_of_tool = """
+# extract_text_from_image(img_path: str) -> str:
+#     Extract text from a local image via xAI (XaiService.extract_text_from_image).
+
+#     Args:
+#         img_path: A local path to an image (e.g. PNG, JPEG).
+
+#     Returns:
+#         Extracted text string.
+# divide(a: int, b: int) -> float:
+#     Divide a and b
+# """
+#     image = state["input_file"]
+#     sys_msg = SystemMessage(
+#         content=(
+#             "You are a helpful butler named Alfred that serves Edwin. "
+#             "You can analyse documents and run computations with provided tools:\n"
+#             f"{textual_description_of_tool} \n "
+#             "You have access to some optional images. "
+#             f"Currently the loaded image is: {image}"
+#         )
+#     )
+
+#     return {
+#         "messages": [invoke_with_retry([sys_msg] + state["messages"])],
+#         "input_file": state["input_file"],
+#     }

@@ -1,4 +1,8 @@
 langgraph
 langchain-huggingface
+langchain-core
+langchain-community
 python-dotenv
 xai-sdk
+datasets
+rank-bm25
