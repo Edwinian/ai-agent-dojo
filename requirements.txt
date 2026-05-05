@@ -1,3 +1,4 @@
 langgraph
 langchain-huggingface
 python-dotenv
+xai-sdk

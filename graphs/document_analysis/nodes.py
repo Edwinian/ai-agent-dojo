@@ -33,13 +33,13 @@ def assistant(state: AgentState):
     # System message
     textual_description_of_tool = """
 extract_text(img_path: str) -> str:
-    Extract text from an image file using a multimodal model.
+    Extract text from a local image via xAI (XaiService.extract_texts).
 
     Args:
-        img_path: A local image file path (strings).
+        img_path: A local path to an image (e.g. PNG, JPEG).
 
     Returns:
-        A single string containing the concatenated text extracted from each image.
+        Extracted text string.
 divide(a: int, b: int) -> float:
     Divide a and b
 """

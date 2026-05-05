@@ -7,9 +7,9 @@ from .graph import DocumentAnalysisGraph
 
 def main() -> None:
     compiled_graph = DocumentAnalysisGraph()
-    invoice_path = Path(__file__).with_name("invoice.png")
+    invoice_path = Path(__file__).with_name("stocks.png")
 
-    # Simple Calculations
+    # # Simple Calculations
     # messages = [HumanMessage(content="Divide 6790 by 5")]
     # messages = compiled_graph.invoke({"messages": messages, "input_file": None})
 
@@ -18,7 +18,7 @@ def main() -> None:
     #     m.pretty_print()
 
     # Document Analysis
-    messages = [HumanMessage(content="What content is in the invoice?")]
+    messages = [HumanMessage(content="What content is in the file?")]
     result = compiled_graph.invoke(
         {"messages": messages, "input_file": str(invoice_path)}
     )
