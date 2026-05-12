@@ -70,5 +70,5 @@ class BaseGraph(ABC, Generic[NODE_NAME, GRAPH_STATE]):
             },
         )
     
-    def visualize(self, xray=False):
+    def draw_mermaid_png(self, xray=False):
         return self.compiled_graph.get_graph(xray=xray).draw_mermaid_png()

@@ -3,6 +3,7 @@ import mimetypes
 from pathlib import Path
 
 from langchain_core.tools import Tool
+
 from xai_service import XaiService
 
 _IMAGE_EXT_TO_MIME = {
@@ -43,7 +44,10 @@ def extract_text_from_image(img_path: str) -> str:
 extract_text_from_image_tool = Tool(
     name="extract_text_from_image",
     func=extract_text_from_image,
-    description="Extract text from a local image path (PNG/JPEG).",
+    description=(
+        "Extract text from a local image file path (PNG, JPEG, WebP, etc.) using vision; "
+        "not for PDFs."
+    ),
 )
 
 __all__ = ["extract_text_from_image", "extract_text_from_image_tool"]

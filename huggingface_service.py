@@ -8,24 +8,25 @@ from langchain_core.prompts import PromptTemplate
 from langchain_huggingface import ChatHuggingFace, HuggingFaceEndpoint
 
 from constants import ModelName
+from llm_service import LlmService
 from type import GRAPH_STATE
 
 load_dotenv()
 
 
-class HuggingFaceService(Generic[GRAPH_STATE]):
+class HuggingFaceService(LlmService, Generic[GRAPH_STATE]):
     def __init__(
         self,
         model_name: ModelName = ModelName.DEEPSEEK_V4_PRO,
         tools: list[Callable[..., Any]] | None = None,
     ) -> None:
-        self.model_name = model_name
+        super().__init__(model_name=model_name, tools=tools)
         self.max_output_length = 512
         self.request_timeout_seconds = int(os.getenv("HF_REQUEST_TIMEOUT_SECONDS", "240"))
         self.chat_llm = self.init_model()
 
-        if tools is not None:
-            self.chat_llm = self.chat_llm.bind_tools(tools)
+        if self.tools is not None:
+            self.chat_llm = self.chat_llm.bind_tools(self.tools)
 
         self.output_parser = StrOutputParser()
         self.prompt_template = PromptTemplate.from_template(

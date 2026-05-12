@@ -9,7 +9,7 @@ def divide(a: int, b: int) -> float:
 divide_tool = Tool(
     name="divide",
     func=divide,
-    description="Divide a by b and return the quotient.",
+    description="Divide the integer a by the integer b and return the quotient as a float.",
 )
 
 __all__ = ["divide", "divide_tool"]

@@ -2,6 +2,7 @@ from langchain_core.tools import Tool
 
 from utils import load_docs, retrieve_info
 
+
 def extract_text(query: str) -> str:
     """Retrieves detailed information about gala guests based on their name or relation."""
     docs = load_docs(document_name="guest")
@@ -11,5 +12,10 @@ def extract_text(query: str) -> str:
 guest_info_tool = Tool(
     name="guest_info_retriever",
     func=extract_text,
-    description="Retrieves detailed information about gala guests based on their name or relation.",
+    description=(
+        "Retrieves detailed information about gala guests based on their name or relation "
+        "to other guests."
+    ),
 )
+
+__all__ = ["extract_text", "guest_info_tool"]

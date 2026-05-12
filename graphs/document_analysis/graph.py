@@ -1,9 +1,9 @@
 from enum import Enum
 
-from langgraph.graph import END, START
+from langgraph.graph import START
 from langgraph.prebuilt import ToolNode, tools_condition
 
-from constants import ModelName, RouteKey
+from constants import ModelName
 from graphs.base_graph import BaseGraph
 from type import GraphEdge, GraphNode
 
@@ -14,8 +14,6 @@ from .tools import tools
 
 class DocumentAnalysisNode(str, Enum):
     ASSISTANT = "assistant"
-    TOOLS = "tools"
-
 
 class DocumentAnalysisGraph(BaseGraph[DocumentAnalysisNode, DocumentState]):
     def __init__(self, model_name: ModelName = ModelName.DEEPSEEK_V4_PRO) -> None:
@@ -25,7 +23,7 @@ class DocumentAnalysisGraph(BaseGraph[DocumentAnalysisNode, DocumentState]):
                 name=DocumentAnalysisNode.ASSISTANT, function=assistant
             ),
             GraphNode[DocumentAnalysisNode, DocumentState](
-                name=DocumentAnalysisNode.TOOLS, function=ToolNode(tools)
+                name='tools', function=ToolNode(tools)
             ),
         ]
         edges: list[GraphEdge[DocumentAnalysisNode, DocumentState]] = [
@@ -37,13 +35,9 @@ class DocumentAnalysisGraph(BaseGraph[DocumentAnalysisNode, DocumentState]):
                 # If the latest message requires a tool, route to tools
                 # Otherwise, provide a direct response
                 route_function=tools_condition,
-                route_map={
-                    "tools": DocumentAnalysisNode.TOOLS,
-                    "__end__": END,
-                },
             ),
             GraphEdge[DocumentAnalysisNode, DocumentState](
-                source_node=DocumentAnalysisNode.TOOLS,
+                source_node='tools',
                 target_node=DocumentAnalysisNode.ASSISTANT,
             ),
         ]
