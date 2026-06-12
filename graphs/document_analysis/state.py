@@ -1,10 +1,13 @@
-from typing import Annotated, Optional, TypedDict
+from typing import Optional
 
-from langchain_core.messages import AnyMessage
-from langgraph.graph import add_messages
+from typing_extensions import NotRequired
+
+from deep_agent_state import DeepAgentState
 
 
-class DocumentState(TypedDict):
+class DocumentState(DeepAgentState):
     # The document provided
-    input_file: Optional[str]  # Contains file path (PDF/PNG)
-    messages: Annotated[list[AnyMessage], add_messages]
+    input_file: NotRequired[Optional[str]]  # Contains file path (PDF/PNG)
+
+
+__all__ = ["DocumentState"]

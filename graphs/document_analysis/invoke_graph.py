@@ -15,11 +15,15 @@ def main() -> None:
     #     m.pretty_print()
 
     # Document Analysis
-    messages = [HumanMessage(content="Tell me about our guest named 'Lady Ada Lovelace'.")]
-    result = compiled_graph.invoke({"messages": messages})
+    # messages = [HumanMessage(content="Tell me about our guest named 'Lady Ada Lovelace'.")]
+    # result = compiled_graph.invoke({"messages": messages})
 
-    print("🎩 Edwin's Response:")
-    print(result['messages'][-1].content)
+    # print("🎩 Edwin's Response:")
+    # print(result['messages'][-1].content)
+    response = compiled_graph.invoke({"messages": "Tell me about 'Lady Ada Lovelace'"})
+
+    print("🎩 Alfred's Response:")
+    print(response['messages'][-1].content)
 
     # for message in result["messages"]:
     #     message.pretty_print()

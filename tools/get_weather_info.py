@@ -1,8 +1,9 @@
 import random
 
-from langchain_core.tools import Tool
+from langchain.tools import tool
 
 
+@tool
 def get_weather_info(location: str) -> str:
     """Fetches dummy weather information for a given location."""
     weather_conditions = [
@@ -14,10 +15,6 @@ def get_weather_info(location: str) -> str:
     return f"Weather in {location}: {data['condition']}, {data['temp_c']}°C"
 
 
-get_weather_info_tool = Tool(
-    name="get_weather_info",
-    func=get_weather_info,
-    description="Fetches dummy weather information for a given location.",
-)
+get_weather_info_tool = get_weather_info
 
 __all__ = ["get_weather_info", "get_weather_info_tool"]

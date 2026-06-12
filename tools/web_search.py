@@ -1,18 +1,15 @@
+from langchain.tools import tool
 from langchain_community.tools import DuckDuckGoSearchRun
-from langchain_core.tools import Tool
 
 
+@tool
 def web_search(query: str) -> str:
-    """Run a DuckDuckGo web search and return the textual result."""
-    search_tool = DuckDuckGoSearchRun()
-    results = search_tool.invoke(query)
+    """Run a DuckDuckGo web search and return the textual summary of results."""
+    search = DuckDuckGoSearchRun()
+    results = search.invoke(query)
     return str(results)
 
 
-web_search_tool = Tool(
-    name="web_search",
-    func=web_search,
-    description="Run a DuckDuckGo web search and return the textual summary of results.",
-)
+web_search_tool = web_search
 
 __all__ = ["web_search", "web_search_tool"]

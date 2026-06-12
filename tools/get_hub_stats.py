@@ -1,8 +1,9 @@
 from huggingface_hub import list_models
 from huggingface_hub.hf_api import ModelInfo
-from langchain_core.tools import Tool
+from langchain.tools import tool
 
 
+@tool
 def get_hub_stats(author: str) -> str:
     """Fetches the most downloaded model from a specific author on the Hugging Face Hub."""
     try:
@@ -21,12 +22,6 @@ def get_hub_stats(author: str) -> str:
         return f"Error fetching models for {author}: {str(e)}"
 
 
-get_hub_stats_tool = Tool(
-    name="get_hub_stats",
-    func=get_hub_stats,
-    description=(
-        "Fetches the most downloaded model from a specific author on the Hugging Face Hub."
-    ),
-)
+get_hub_stats_tool = get_hub_stats
 
 __all__ = ["get_hub_stats", "get_hub_stats_tool"]
