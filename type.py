@@ -1,8 +1,25 @@
+from __future__ import annotations
+
 from dataclasses import dataclass
 from typing import Callable, Generic, Optional, TypeVar
 
+from constants import ModelName
+from tools import ToolName
+
 NODE_NAME = TypeVar("NODE")
 GRAPH_STATE = TypeVar("GRAPH_STATE")
+
+
+@dataclass(frozen=True)
+class SubAgent:
+    """Configuration for a specialized sub-agent."""
+
+    name: str
+    description: str
+    prompt: str
+    model_name: ModelName = ModelName.DEEPSEEK_V4_FLASH
+    tool_names: list[ToolName] | None = None
+
 
 @dataclass(frozen=True)
 class GraphNode(Generic[NODE_NAME, GRAPH_STATE]):

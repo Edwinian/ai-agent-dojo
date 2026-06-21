@@ -1,8 +1,13 @@
+from datetime import date
 from importlib.util import module_from_spec, spec_from_file_location
 from pathlib import Path
 
 from langchain_community.retrievers import BM25Retriever
 from langchain_core.documents import Document
+
+
+def get_today_str() -> str:
+    return date.today().isoformat()
 
 
 def load_docs(document_name: str) -> list[Document]:
